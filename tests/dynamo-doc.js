@@ -144,6 +144,27 @@ describe('Dynamo Doc main', function() {
             var result = dynamoDoc.jsValue(value);
             expect(result).to.equals(test);
         });
+
+        it('should deal with Arrays', function() {
+            var value = {L:
+                [
+                    {S: 'a string'},
+                    {N: '12345'},
+                    {S: 'another string'},
+                    {BOOL: false},
+                    {NULL: true}
+                ]
+            };
+            var arr = [
+                'a string',
+                12345,
+                'another string',
+                false,
+                null
+            ];
+            var result = dynamoDoc.jsValue(value);
+            expect(result).to.deep.equal(arr);
+        });
     });
 
     describe('#jsToDynamo(doc, callback)', function() {
