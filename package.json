@@ -1,7 +1,7 @@
 {
   "name": "dynamo-doc",
-  "version": "0.0.1",
-  "description": "dynamo-doc",
+  "version": "v0.1.0",
+  "description": "a sane and easy-to-use wrapper around AWS DynamoDB document structures",
   "keywords": [
     "dynamodb",
     "dynamo-db",
