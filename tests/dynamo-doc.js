@@ -103,6 +103,49 @@ describe('Dynamo Doc main', function() {
         });
     });
 
+    describe('#jsValue(doc)', function() {
+
+        it('should deal with strings', function() {
+            var value = {S: "some value"};
+            var str = "some value";
+            var result = dynamoDoc.jsValue(value);
+            expect(result).to.equals(str);
+        });
+
+        it('should deal with integers', function() {
+            var value = {N: '12345'};
+            var number = 12345;
+            var result = dynamoDoc.jsValue(value);
+            expect(result).to.equals(number);
+        });
+
+        it('should deal with floats', function() {
+            var value = {N: '12345.67'};
+            var number = 12345.67;
+            var result = dynamoDoc.jsValue(value);
+            expect(result).to.equals(number);
+        });
+
+        it('should deal with booleans', function() {
+            var value = {BOOL: true};
+            var bool = true;
+            var result = dynamoDoc.jsValue(value);
+            expect(result).to.equals(bool);
+
+            bool = false;
+            value = {BOOL: false};
+            result = dynamoDoc.jsValue(value);
+            expect(result).to.equals(bool);
+        });
+
+        it('should deal with null', function() {
+            var value = {NULL: true};
+            var test = null;
+            var result = dynamoDoc.jsValue(value);
+            expect(result).to.equals(test);
+        });
+    });
+
     describe('#jsToDynamo(doc, callback)', function() {
 
         it('should be able to convert a simple object', function(done) {
@@ -150,6 +193,21 @@ describe('Dynamo Doc main', function() {
             dynamoDoc.jsToDynamo(json, function(err, data) {
                 expect(err).to.be.null;
                 expect(data).to.deep.equal(dynamo);
+                done();
+            });
+        });
+    });
+
+    describe('#dynamoToJs(dynamo, callback)', function() {
+
+        it('should be able to convert a simple object', function(done) {
+
+            var dynamo = {someKey: {S: "some value"}};
+            var json = {someKey: "some value"};
+
+            dynamoDoc.dynamoToJs(dynamo, function(err, data) {
+                expect(err).to.be.null;
+                expect(data).to.deep.equal(json);
                 done();
             });
         });
