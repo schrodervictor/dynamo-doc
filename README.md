@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/schrodervictor/dynamo-doc.svg?branch=master)](https://travis-ci.org/schrodervictor/dynamo-doc)
+
 dynamo-doc
 ==========
 
