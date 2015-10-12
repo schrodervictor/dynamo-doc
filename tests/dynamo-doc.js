@@ -165,6 +165,35 @@ describe('Dynamo Doc main', function() {
             var result = dynamoDoc.jsValue(value);
             expect(result).to.deep.equal(arr);
         });
+
+        it('should deal with Objects', function() {
+            var value = {M: {
+                key1: {S: 'a string'},
+                key2: {N: '12345'},
+                key3: {S: 'another string'},
+                key4: {BOOL: false},
+                key5: {NULL: true},
+                key6: {M: {
+                    nestedKey: {M: {
+                        anotherLevel: {S: 'with a string'}
+                    }}
+                }}
+            }};
+            var obj = {
+                key1: 'a string',
+                key2: 12345,
+                key3: 'another string',
+                key4: false,
+                key5: null,
+                key6: {
+                    nestedKey: {
+                        anotherLevel: 'with a string'
+                    }
+                }
+            };
+            var result = dynamoDoc.jsValue(value);
+            expect(result).to.deep.equal(obj);
+        });
     });
 
     describe('#jsToDynamo(doc, callback)', function() {
@@ -225,6 +254,43 @@ describe('Dynamo Doc main', function() {
 
             var dynamo = {someKey: {S: "some value"}};
             var json = {someKey: "some value"};
+
+            dynamoDoc.dynamoToJs(dynamo, function(err, data) {
+                expect(err).to.be.null;
+                expect(data).to.deep.equal(json);
+                done();
+            });
+        });
+
+        it('should be able to convert an object with multiple value types', function(done) {
+
+            var dynamo = {
+                keyForString: {S: "some value"},
+                keyForNumber: {N: "1234"},
+                keyForBooleanTrue: {BOOL: true},
+                keyForBooleanFalse: {BOOL: false},
+                keyForNull: {NULL: true},
+                keyForArray: {L:
+                    [{N: '1'}, {N: '2'}, {S: '3'}, {S: '4'}, {NULL: true}]
+                },
+                keyForObject: {M: {
+                    nested: {M: {
+                        level: {L:
+                            [{BOOL: false}, {S: 'string'}]
+                        }
+                    }}
+                }}
+            };
+
+            var json = {
+                keyForString: "some value",
+                keyForNumber: 1234,
+                keyForBooleanTrue: true,
+                keyForBooleanFalse: false,
+                keyForNull: null,
+                keyForArray: [1, 2, '3', '4', null],
+                keyForObject: { nested: { level: [false, 'string']}},
+            };
 
             dynamoDoc.dynamoToJs(dynamo, function(err, data) {
                 expect(err).to.be.null;
