@@ -29,5 +29,12 @@
       "email": "schrodervictor@gmail.com"
     }
   ],
-  "main": "index.js"
+  "main": "index.js",
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.3.2"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha tests/"
+  }
 }
