@@ -101,6 +101,28 @@ describe('Dynamo Doc main', function() {
             var result = dynamoDoc.dynamoValue(obj);
             expect(result).to.deep.equal(value);
         });
+
+        it('should deal with numeric sets', function() {
+            var numSet = new Set([1, 2, 123]);
+            var value = {NS: [
+                '1',
+                '2',
+                '123'
+            ]};
+            var result = dynamoDoc.dynamoValue(numSet);
+            expect(result).to.deep.equal(value);
+        });
+
+        it('should deal with string sets', function() {
+            var numSet = new Set(['one', 'two', 'one hundred twenty three']);
+            var value = {SS: [
+                'one',
+                'two',
+                'one hundred twenty three'
+            ]};
+            var result = dynamoDoc.dynamoValue(numSet);
+            expect(result).to.deep.equal(value);
+        });
     });
 
     describe('#jsValue(doc)', function() {
@@ -194,6 +216,34 @@ describe('Dynamo Doc main', function() {
             var result = dynamoDoc.jsValue(value);
             expect(result).to.deep.equal(obj);
         });
+
+        it('should deal with numeric sets', function() {
+            var value = {NS: [
+                '1',
+                '2',
+                '123'
+            ]};
+            var numSet = new Set([1, 2, 123]);
+            var result = dynamoDoc.jsValue(value);
+            expect(result).to.an.instanceOf(Set);
+            numSet.forEach(function(elem) {
+                expect(result.has(elem)).to.be.true;
+            });
+        });
+
+        it('should deal with string sets', function() {
+            var value = {SS: [
+                'one',
+                'two',
+                'one hundred twenty three'
+            ]};
+            var numSet = new Set(['one', 'two', 'one hundred twenty three']);
+            var result = dynamoDoc.jsValue(value);
+            expect(result).to.an.instanceOf(Set);
+            numSet.forEach(function(elem) {
+                expect(result.has(elem)).to.be.true;
+            });
+        });
     });
 
     describe('#jsToDynamo(doc, callback)', function() {
@@ -219,7 +269,9 @@ describe('Dynamo Doc main', function() {
                 keyForBooleanFalse: false,
                 keyForNull: null,
                 keyForArray: [1, 2, '3', '4', null],
-                keyForObject: { nested: { level: [false, 'string']}}
+                keyForObject: { nested: { level: [false, 'string']}},
+                keyForNumericSet: new Set([1, 2, 3]),
+                keyForStringSet: new Set(['some', 'string', 'here'])
             };
 
             var dynamo = {
@@ -237,7 +289,13 @@ describe('Dynamo Doc main', function() {
                             [{BOOL: false}, {S: 'string'}]
                         }
                     }}
-                }}
+                }},
+                keyForNumericSet: {NS:
+                    ['1', '2', '3']
+                },
+                keyForStringSet: {SS:
+                    ['some', 'string', 'here']
+                }
             };
 
             dynamoDoc.jsToDynamo(json, function(err, data) {
@@ -279,7 +337,13 @@ describe('Dynamo Doc main', function() {
                             [{BOOL: false}, {S: 'string'}]
                         }
                     }}
-                }}
+                }},
+                keyForNumericSet: {NS:
+                    ['1', '2', '3']
+                },
+                keyForStringSet: {SS:
+                    ['some', 'string', 'here']
+                }
             };
 
             var json = {
@@ -290,11 +354,19 @@ describe('Dynamo Doc main', function() {
                 keyForNull: null,
                 keyForArray: [1, 2, '3', '4', null],
                 keyForObject: { nested: { level: [false, 'string']}},
+                keyForNumericSet: new Set([1, 2, 3]),
+                keyForStringSet: new Set(['some', 'string', 'here'])
             };
 
             dynamoDoc.dynamoToJs(dynamo, function(err, data) {
                 expect(err).to.be.null;
                 expect(data).to.deep.equal(json);
+                json.keyForNumericSet.forEach(function(elem) {
+                    expect(data.keyForNumericSet.has(elem)).to.be.true;
+                });
+                json.keyForStringSet.forEach(function(elem) {
+                    expect(data.keyForStringSet.has(elem)).to.be.true;
+                });
                 done();
             });
         });
