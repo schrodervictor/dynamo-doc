@@ -1,0 +1,33 @@
+{
+  "name": "dynamo-doc",
+  "version": "0.0.1",
+  "description": "dynamo-doc",
+  "keywords": [
+    "dynamodb",
+    "dynamo-db",
+    "dynamo-doc",
+    "aws"
+  ],
+  "author": {
+    "name": "Victor Schröder",
+    "email": "schrodervictor@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Victor Schröder",
+      "email": "schrodervictor@gmail.com"
+    }
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/schrodervictor/dynamo-doc.git"
+  },
+  "maintainers": [
+    {
+      "name": "Victor Schröder",
+      "email": "schrodervictor@gmail.com"
+    }
+  ],
+  "main": "index.js"
+}
