@@ -51,6 +51,27 @@ describe('Dynamo Doc main', function() {
             result = dynamoDoc.dynamoValue(test);
             expect(result).to.deep.equal(value);
         });
+
+        it('should deal with Arrays', function() {
+            var arr = [
+                'a string',
+                12345,
+                'another string',
+                false,
+                null
+            ];
+            var value = {L:
+                [
+                    {S: 'a string'},
+                    {N: '12345'},
+                    {S: 'another string'},
+                    {BOOL: false},
+                    {NULL: true}
+                ]
+            };
+            var result = dynamoDoc.dynamoValue(arr);
+            expect(result).to.deep.equal(value);
+        });
     });
 
     describe('#jsToDynamo(doc, callback)', function() {
