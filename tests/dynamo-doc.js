@@ -22,6 +22,13 @@ describe('Dynamo Doc main', function() {
             expect(result).to.deep.equal(value);
         });
 
+        it('should handle zero correctly', function() {
+            var number = 0;
+            var value = {N: '0'};
+            var result = dynamoDoc.dynamoValue(number);
+            expect(result).to.deep.equal(value);
+        });
+
         it('should deal with floats', function() {
             var number = 12345.67;
             var value = {N: '12345.67'};

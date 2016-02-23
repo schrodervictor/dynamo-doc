@@ -65,4 +65,5 @@ pull-request. Only PR's with tests will be considered.
 
 ## Releases
 
+* 0.1.1 Bugfix (zero was reporting as boolean)
 * 0.1.0 Initial release
