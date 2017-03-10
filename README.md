@@ -6,12 +6,12 @@ dynamo-doc
 An useful converter between js/json objects and the super-boring-strong-typed
 object structure expected by AWS DynamoDB.
 
-With this module you can just jump into reading and wrinting objects into
+With this module you can just jump into reading and writing objects into
 DynamoDB tables with plain js objects (well, not really, because the queries
 are also a hell, but take a look at our energy-db module that makes your
 life easier).
 
-## Instalation
+## Installation
 
 If you are reading you know how to install a npm module. Just put it in your
 dependencies list or install it globally if you are one of those people.
